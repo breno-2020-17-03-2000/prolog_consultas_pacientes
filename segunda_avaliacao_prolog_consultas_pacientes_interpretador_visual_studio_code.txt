@@ -1,0 +1,49 @@
+Certamente! Aqui estão alguns exemplos de consultas Prolog para o código fornecido:
+
+1.Consultar nomes dos pacientes:
+
+
+?- nomes_pacientes.
+
+
+2.Consultar dados dos pacientes:
+
+
+?- dados_pacientes.
+
+
+3.Adicionar um novo paciente interativamente:
+
+
+?- adicionar_paciente.
+
+Durante a execução deste comando, o sistema solicitará os dados do paciente.
+
+
+4.Consultar IMC de um paciente existente (substitua NomeDoPaciente pelo nome desejado):
+
+
+?- paciente([NomeDoPaciente, _, _, _, _, _, IMC, _, _, _], _).
+
+
+5.Consultar pacientes com diabetes:
+
+
+?- paciente([Nome, _, _, _, _, _, _, _, _, sim], _).
+
+
+6.Consultar pacientes que são fumantes e têm mais de 50 anos:
+
+
+?- paciente([Nome, _, Idade, _, _, sim, _, _, _, _], _), Idade > 50.
+
+
+7.Adicionar um novo paciente especificando os detalhes diretamente:
+
+
+?- adicionar_paciente.
+
+Durante a execução, insira os detalhes diretamente em vez de responder a perguntas interativas.
+
+
+Lembre-se de que você pode ajustar essas consultas conforme necessário para atender às suas necessidades específicas.

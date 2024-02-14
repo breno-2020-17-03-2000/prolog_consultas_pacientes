@@ -1,0 +1,119 @@
+% Informações básicas sobre os dados pessoais
+dados_pessoais.
+
+% Base de fatos para pacientes existentes
+% paciente([Nome, Sexo, Idade, Hipertensao, Cardiaco, Fumante, IMC,
+% Hemoglobina,Glicose,Diabetes]).
+paciente([maria, feminino, 37.0, nao, nao, passado, 30.5, 5.7, 100], nao).
+paciente([gorete, feminino, 53.0, nao, nao, passado, 26.37, 4.5, 112], nao).
+paciente([pedro, masculino, 54.0, nao, nao, nunca, 31.86, 6.6, 145], nao).
+paciente([juliana, feminino, 37.0, nao, nao, passado, 21.25, 6.1, 200], nao).
+paciente([catisvalda, feminino, 56.0, nao, nao, nunca, 30.95, 6.5, 145], nao).
+paciente([ursulino, masculino, 79.0, nao, nao, passado, 31.19, 5.8, 155], nao).
+paciente([jose, masculino, 67.0, nao, nao, sim, 27.32, 6.8, 220], sim).
+paciente([marta, feminino, 74.0, nao, nao, sim, 29.51, 8.2, 240], sim).
+paciente([jussara, feminino, 37.0, nao, nao, passado, 36.87, 8.8, 160], sim).
+paciente([katia, feminino, 65.0, sim, sim, nunca, 33.55, 8.9, 202], sim).
+paciente([marcelo, masculino, 55.0, nao, sim, passado, 30.42, 6.2, 300], sim).
+paciente([ayla, feminino, 61.0, nao, nao, passado, 34.45, 6.5, 280], sim).
+paciente([rafaela, feminino, 58.0, sim, nao, nunca, 38.31, 7.0, 200], sim).
+paciente([cassia, feminino, 61.0, nao, nao, sim, 30.11, 6.2, 240], sim).
+paciente([elisa, feminino, 26.0, nao, nao, passado, 27.32, 4.0, 200], nao).
+paciente([alice, feminino, 74.0, nao, nao, passado, 28.12, 5.0, 100], nao).
+paciente([jade, feminino, 45.0, sim, nao, nunca, 23.05, 4.8, 130], nao).
+paciente([heloise, masculino, 56.0, nao, nao, nunca, 26.78, 4.8, 200], nao).
+paciente([benicio, masculino, 20.0, nao, nao, passado, 23.04, 5.7, 160], nao).
+paciente([paulo, masculino, 70.0, nao, nao, passado, 15.94, 5.8, 158], nao).
+paciente([otavio, masculino, 30.0, nao, nao, passado, 15.8, 6.2, 90], nao).
+paciente([isis, feminino, 80.0, nao, nao, nunca, 25.04, 9.0, 209], sim).
+paciente([francinaldo, masculino, 63.0, nao, sim, passado, 27.32, 6.6, 300], sim).
+paciente([juvelino, masculino, 58.0, nao, nao, passado, 32.38, 6.6, 159], sim).
+paciente([maya, feminino, 43.0, sim, nao, nunca, 34.21, 9.0, 160], sim).
+paciente([genetildes, masculino, 56.0, nao, nao, nunca, 37.59, 4.0, 159], nao).
+paciente([waldisney, masculino, 60.0, nao, nao, passado, 25.4, 4.0, 200], nao).
+paciente([reinaldo, masculino, 27.0, nao, nao, sim, 27.32, 3.5, 100], nao).
+paciente([frederico, masculino, 54.0, nao, nao, sim, 30.41, 5.0, 158], nao).
+
+% Predicado dinâmico para armazenar pacientes
+:- dynamic paciente/2.
+:- dynamic data_cadastro/2.
+
+% Exibir os nomes dos pacientes
+nomes_pacientes :-
+    findall(Nome, paciente([Nome|_], _), Nomes),
+    write('Nomes dos pacientes: '), write(Nomes), nl.
+
+% Predicado para exibir os dados dos pacientes
+dados_pacientes :-
+    nl, % Adiciona uma nova linha para separar a lista de dados das perguntas
+    findall(P, paciente(P, _), Pacientes),
+    write('Dados dos pacientes:'), nl,
+    exibir_pacientes(Pacientes).
+
+exibir_pacientes([]).
+exibir_pacientes([Paciente | Resto]) :-
+    write('Paciente: '), write(Paciente), nl,
+    exibir_pacientes(Resto).
+
+% Adiciona um novo paciente
+adicionar_paciente :-
+    dados_pacientes,
+    nl, % Adiciona uma nova linha para separar a lista de dados das perguntas
+    get_time(Timestamp),
+    format_time(atom(DataCadastro), '%Y-%m-%d %H:%M:%S', Timestamp), % Formata a data
+    repeat,
+    write('Digite o nome do paciente: '),
+    read(Nome),
+    (
+    paciente([Nome, _, _, _, _, _, _, _, _, _], _) ->
+    write('Paciente ja cadastrado no sistema. Escolha outro nome.'), nl,
+    fail % Falha para repetir a leitura do nome
+    ;
+    write('Digite o sexo do paciente: '),
+    read(Sexo),
+    write('Digite a idade do paciente: '),
+    read(Idade),
+    write('Digite se o paciente possui hipertensao (sim/nao): '),
+    read(Hipertensao),
+    write('Digite se o paciente possui doencas cardiacas (sim/nao): '),
+    read(Cardiaco),
+    write('Digite se o paciente e fumante (sim/nao): '),
+    read(Fumante),
+
+    write('Informe o Peso do Paciente'),
+    read(Peso),
+    write('Informe a Altura do Paciente:'),
+    read(Altura),
+
+    calcular_IMC(Peso, Altura, IMC),
+
+    write('Digite a hemoglobina do paciente: '),
+    read(Hemoglobina),
+    write('Digite a glicose do paciente: '),
+    read(Glicose),
+    write('O paciente possui diabetes (sim/nao): '),
+    read(Diabetes),
+
+    % perguntas se é sim ou não
+    atom_yes_no(Hipertensao, HipertensaoAtom),
+    atom_yes_no(Cardiaco, CardiacoAtom),
+    atom_yes_no(Fumante, FumanteAtom),
+    atom_yes_no(Diabetes, DiabetesAtom),
+
+    NovoPaciente = [Nome, Sexo, Idade, HipertensaoAtom, CardiacoAtom, FumanteAtom, IMC,
+    Hemoglobina, Glicose, DiabetesAtom],
+
+    assertz(paciente(NovoPaciente, nao)),
+    assertz(data_cadastro(Nome, DataCadastro)), % Registra a data de cadastro
+    write('Paciente cadastrado com sucesso.'), nl,
+    listar_pacientes_recem_cadastrados % Chama o predicado para mostrar os pacientes recém- cadastrados
+    ).
+
+% Converte resposta sim/nao para atomos 'sim' ou 'nao'
+atom_yes_no(sim, sim).
+atom_yes_no(nao, nao).
+
+% 5. Cálculo do IMC
+calcular_IMC(Peso, Altura, IMC) :-
+    ValorIMC is Peso / (Altura * Altura),
+    IMC is round(ValorIMC * 100) / 100.
